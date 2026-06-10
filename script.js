@@ -3,15 +3,42 @@ const markdownInput = document.getElementById('markdown-input');
 const previewOutput = document.getElementById('preview-output');
 const downloadBtn = document.getElementById('download-btn');
 const themeBtn = document.getElementById('theme-btn');
+const wordCountElement = document.getElementById('word-count');
+const charCountElement = document.getElementById('char-count');
 
-// 1. Live Preview Rendering Function
-markdownInput.addEventListener('input', (e) => {
-    const rawText = e.target.value;
-    // marked.parse() converts markdown strings into HTML strings safely
-    previewOutput.innerHTML = marked.parse(rawText);
+// 1. AUTO-LOAD: Check if there's any saved text when the page opens
+window.addEventListener('DOMContentLoaded', () => {
+    const savedText = localStorage.getItem('scribble_saved_note');
+    if (savedText) {
+        markdownInput.value = savedText;
+        updatePreviewAndStats(savedText);
+    }
 });
 
-// 2. Download/Save File Functionality
+// Helper function to update preview, word count, and character count
+function updatePreviewAndStats(text) {
+    // Update preview HTML
+    previewOutput.innerHTML = marked.parse(text);
+
+    // Update Character Count
+    charCountElement.innerText = `Characters: ${text.length}`;
+
+    // Update Word Count
+    const words = text.trim().split(/\s+/).filter(word => word.length > 0);
+    wordCountElement.innerText = `Words: ${words.length}`;
+}
+
+// 2. Live Typing Event Listener (Updates preview, counts, and AUTO-SAVES)
+markdownInput.addEventListener('input', (e) => {
+    const currentText = e.target.value;
+    
+    updatePreviewAndStats(currentText);
+
+    // AUTO-SAVE: Save text into browser memory dynamically
+    localStorage.setItem('scribble_saved_note', currentText);
+});
+
+// 3. Download/Save File Functionality
 downloadBtn.addEventListener('click', () => {
     const textToSave = markdownInput.value;
     if (!textToSave.trim()) {
@@ -19,24 +46,20 @@ downloadBtn.addEventListener('click', () => {
         return;
     }
 
-    // Create a virtual file data container (Blob)
     const blob = new Blob([textToSave], { type: 'text/markdown' });
     const fileUrl = URL.createObjectURL(blob);
-    
-    // Create a temporary link element to trigger the download
     const downloadLink = document.createElement('a');
     downloadLink.href = fileUrl;
-    downloadLink.download = 'my-note.md'; // Default filename
+    downloadLink.download = 'my-note.md';
     
     document.body.appendChild(downloadLink);
     downloadLink.click();
     
-    // Clean up memory
     document.body.removeChild(downloadLink);
     URL.revokeObjectURL(fileUrl);
 });
 
-// 3. Theme Toggle Functionality
+// 4. Theme Toggle Functionality
 themeBtn.addEventListener('click', () => {
     const currentTheme = document.body.getAttribute('data-theme');
     if (currentTheme === 'light') {
@@ -44,4 +67,5 @@ themeBtn.addEventListener('click', () => {
     } else {
         document.body.setAttribute('data-theme', 'light');
     }
+});
 });
