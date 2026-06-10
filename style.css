@@ -70,7 +70,7 @@ button:hover {
 .workspace {
     display: flex;
     flex: 1;
-    height: calc(100vh - 55px);
+    height: calc(100vh - 85px); /* Adjusted slightly to fit both top and bottom bars perfectly */
 }
 
 #markdown-input, .preview-area {
@@ -106,4 +106,17 @@ button:hover {
 .preview-area ul, .preview-area ol {
     margin-left: 20px;
     margin-bottom: 15px;
+}
+
+/* Footer Bar Styling */
+.footer-bar {
+    display: flex;
+    gap: 10px;
+    padding: 8px 20px;
+    background-color: var(--panel-bg);
+    border-top: 1px solid var(--border-color);
+    font-size: 0.85rem;
+    color: var(--text-color);
+    opacity: 0.8;
+}
 }
