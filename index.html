@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scribble - Minimal Markdown Editor</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+
+    <div class="control-bar">
+        <div class="logo">Scribble.md</div>
+        <div class="actions">
+            <button id="download-btn">Save File (.md)</button>
+            <button id="theme-btn">Toggle Theme</button>
+        </div>
+    </div>
+
+    <div class="workspace">
+        <textarea id="markdown-input" placeholder="Start typing your markdown here... Use # for headers, ** for bold, * for lists!"></textarea>
+        
+        <div id="preview-output" class="preview-area"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
